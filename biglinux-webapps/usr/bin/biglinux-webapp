@@ -4,13 +4,17 @@
 export TEXTDOMAINDIR="/usr/share/locale"
 export TEXTDOMAIN=biglinux-webapps
 
+FLATPAK_BIN=/var/lib/flatpak/exports/bin
+# SNAPD_BIN=/var/lib/snapd/snap/bin
+
+script_src=/usr/share/bigbashview/bcc/apps/biglinux-webapps/scripts
+
 if [ "$1" = "firelibre" ]; then
     kdialog --sorry $"O navegador definido para abrir os WebApps não está instalado! \nTente alterar o navegador no Gerenciador de WebApps! \n" --title $"WebApps BigLinux"
     exit 1
 fi
 
-# shellcheck source=/dev/null
-. /usr/share/bigbashview/bcc/apps/biglinux-webapps/scripts/detect_browser.env
+. "$script_src"/detect_browser.sh
 
 parse_args() {
     [[ "$*" = *"--app="* ]] && return
@@ -27,7 +31,7 @@ parse_args() {
                 # if that arg is a domain and is ping-able
                 url="$a"
             else
-                url=$(shortappname "$a")
+                url=$("$script_src"/default_apps.sh "$a")
             fi
         elif [[ "$a" != "--class"* ]]; then
             newargs="$newargs $a"

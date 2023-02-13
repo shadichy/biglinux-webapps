@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-#Translation
-
-export TEXTDOMAINDIR="/usr/share/locale"
-export TEXTDOMAIN=biglinux-webapps
-
-. ./scripts/detect_browser.env
-
 DESKNAME=${filedesk##*/}
 USER_DESKTOP=$(xdg-user-dir DESKTOP)
 NAME=$(awk -F'=' '/Name/{print $2}' "$filedesk")
@@ -139,7 +132,7 @@ echo -n '
 				'$"Criar atalho na Área de Trabalho"'
 			</div>
 			<div class="button-wrapper">
-				<input id="shortcut" type="checkbox" class="switch" name="shortcut" '$checked'/>
+				<input id="shortcut" type="checkbox" class="switch" name="shortcut" '"$checked"'/>
 			</div>
 		</li>
 

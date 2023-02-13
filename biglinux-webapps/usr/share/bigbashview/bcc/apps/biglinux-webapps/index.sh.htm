@@ -11,17 +11,13 @@
 #  Licensed by GPL V2 or greater
 ##################################
 
-#Translation
-export TEXTDOMAINDIR="/usr/share/locale"
-export TEXTDOMAIN=biglinux-webapps
-
-# shellcheck source=./scripts/detect_browser.env
-. ./scripts/detect_browser.env
-
 echo -n '
 <!DOCTYPE html>
 <html>
   <head>
+    <script>
+      console.log("'"$available_browsers"'", 1)
+    </script>
     <link rel="stylesheet" href="css/style.css">
     <style>
       *{

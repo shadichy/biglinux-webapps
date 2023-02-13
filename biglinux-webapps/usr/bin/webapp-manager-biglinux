@@ -18,7 +18,10 @@ mkdir -p ~/.local/share/icons
 mkdir -p "$HOME_SHARE_DIR_APP"
 mkdir -p ~/.local/bin
 
-. /usr/share/bigbashview/bcc/apps/biglinux-webapps/scripts/detect_browser.env
+for script in {detect_browser,installed_browsers_inf,categories}; do
+    . /usr/share/bigbashview/bcc/apps/biglinux-webapps/scripts/"$script".sh
+done
+
 [ "$(<~/.bigwebapps/BROWSER)" ] || detect_browser
 
 if [ ! -e ~/.bigwebapps/NATIVE ];then

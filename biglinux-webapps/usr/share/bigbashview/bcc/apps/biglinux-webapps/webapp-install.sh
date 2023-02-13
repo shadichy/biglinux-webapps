@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-FLATPAK_BIN=/var/lib/flatpak/exports/bin
-SNAPD_BIN=/var/lib/snapd/snap/bin
-
 _NAMEDESK=$(sed 's|https\:\/\/||;s|www\.||;s|\/.*||;s|\.|-|g' <<<"$urldesk")
 USER_DESKTOP=$(xdg-user-dir DESKTOP)
 
