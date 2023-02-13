@@ -149,7 +149,7 @@ echo -n '
                           <select class="svg-center" id="browserSelect" name="browser">' | tr -d "\t\n\r"
 
 for browser in "${available_browsers[@]}"; do
-	echo -n "<option value=\"${browser}\" data-icon=\"$(resolve_icon "${browser##*/}")\">$(get_title "$browser")</option>"
+	echo -n "<option value=\"${browser}\" data-icon=\"${browser_icons["${browser##*/}"]}\">$(get_title "$browser")</option>"
 done
 
 echo -n '</select>
@@ -561,7 +561,7 @@ echo -n '      <!--EDIT MODAL-->
 
 BROWSER=$(<~/.bigwebapps/BROWSER)
 title=$(get_title "$BROWSER")
-ICON=$(resolve_icon "${BROWSER##*/}")
+ICON=${browser_icons["${BROWSER##*/}"]}
 echo -n '
     <div class="content-section-title" style="margin-bottom:0">
       '$"Navegador padrão<br>dos WebApps:"'
@@ -582,7 +582,7 @@ echo -n '
     </div>' | tr -d "\t\n\r"
 
 for browser in "${available_browsers[@]}"; do
-	icon=$(resolve_icon "${browser##*/}")
+	icon=${browser_icons["${browser##*/}"]}
 	btn=$(tr -d "\t\n\r" <<<'<button class="btn-img status-button btn-img-main"
          id="'"${browser//\//_}"'"
          title="'"$(get_title "$browser")"'">

@@ -80,7 +80,7 @@ echo -n '
 		<li>
 			<div class="products">
 				<div class="svg-center" id="thumb">
-					<img height="58" width="58" id="browserEdit" src="icons/'"$(resolve_icon "${BROWSER##*/}")"'.svg"/>
+					<img height="58" width="58" id="browserEdit" src="icons/'"${browser_icons["${BROWSER##*/}"]}"'.svg"/>
 				</div>
 				'$"Navegador"'
 			</div>
@@ -88,7 +88,7 @@ echo -n '
 				<select class="svg-center" id="browserSelectEdit" name="browserNew">' | tr -d "\t\n\r"
 
 for browser in "${available_browsers[@]}"; do
-	echo -n "<option value=\"$browser\" data-icon=\"$(resolve_icon "${browser##*/}")\" $(
+	echo -n "<option value=\"$browser\" data-icon=\"${browser_icons["${browser##*/}"]}\" $(
 		[ "$BROWSER" = "$browser" ] && echo -n "selected"
 	)>$(get_title "$browser")</option>"
 done

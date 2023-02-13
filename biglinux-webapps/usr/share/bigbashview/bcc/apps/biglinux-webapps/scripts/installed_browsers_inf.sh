@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-. ./browser_list.sh
+. "$SCRIPT_SRC"/browser_list.sh
 
 FLATPAK_BIN=/var/lib/flatpak/exports/bin
 SNAPD_BIN=/var/lib/snapd/snap/bin
 
-declare -A browser_trans
+declare -A browser_trans browser_icons
 declare -a available_browsers
 
 resolve_name() {
@@ -36,17 +36,6 @@ resolve_name() {
   printf "%s" "$br_name"
 }
 
-resolve_icon() {
-  case "$1" in
-  electron*) icon='electron' ;;
-  *)
-    icon=$(resolve_name "$1")
-    icon="${icon,,}" # to lowercase
-    ;;
-  esac
-  printf "%s" "$icon"
-}
-
 get_title() {
   printf "%s %s" "${browser_trans["${1##*/}"]}" "$(
     if [[ "$1" = "${FLATPAK_BIN}"* ]]; then
@@ -62,16 +51,23 @@ set_br() {
 
   # Adding translations
   case "$1" in
-  bbv-client) browser_trans["$1"]=$"WEBVIEW" ;;
-  electron*) browser_trans["$1"]=$"ELECTRON"" ${1#electron}" ;;
+  bbv-client)
+    name=$"WEBVIEW"
+    icon="$1"
+    ;;
+  electron*)
+    name=$"ELECTRON"" ${1#electron}"
+    icon="electron"
+    ;;
   *)
     name=$(resolve_name "$1")
-    name=${name/-/ }
-    name=${name^^} # to uppercase
-
-    browser_trans["$1"]=$"$name"
+    icon="${name,,}" # to lowercase
+    name=${name^^}   # to uppercase
     ;;
   esac
+  browser_trans["$1"]=$"${name/-/ }"
+  browser_icons["$1"]=$icon
+
 }
 
 shopt -s nocasematch
@@ -93,4 +89,5 @@ for browser in "${browser_bin_list[@]}"; do
 
 done
 
-export browser_trans available_browsers FLATPAK_BIN SNAPD_BIN
+export browser_trans browser_icons available_browsers FLATPAK_BIN SNAPD_BIN
+export -f get_title

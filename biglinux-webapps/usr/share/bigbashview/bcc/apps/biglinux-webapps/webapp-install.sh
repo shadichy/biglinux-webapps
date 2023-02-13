@@ -4,22 +4,22 @@ _NAMEDESK=$(sed 's|https\:\/\/||;s|www\.||;s|\/.*||;s|\.|-|g' <<<"$urldesk")
 USER_DESKTOP=$(xdg-user-dir DESKTOP)
 
 NAME="${_NAMEDESK}-$RANDOM"
-DIR_PROF="$HOME/.bigwebapps/$NAME"
+DIR_PROF=~/.bigwebapps/"$NAME"
 BASENAME="$NAME-webapp-biglinux-custom"
 BROWSER_NAME="${browser##*/}"
 case "$browser" in
 *epiphany)
 	BASENAME="$BROWSER_NAME.WebApp_$BASENAME"
-	DIR_PROF="$HOME/.bigwebapps/$BASENAME"
+	DIR_PROF=~/.bigwebapps/"$BASENAME"
 	;;
 esac
 
 BASENAME_APP="$BASENAME.desktop"
-LINK_APP="$HOME/.local/share/applications/$BASENAME_APP"
+LINK_APP=~/.local/share/applications/"$BASENAME_APP"
 DESKTOP_LINK="$USER_DESKTOP/$BASENAME_APP"
 
 if [[ "$browser" = "$FLATPAK_BIN/"* ]]; then
-	DIR_PROF="$HOME/.var/app/$BROWSER_NAME/data/$NAME"
+	DIR_PROF=~/.var/app/$BROWSER_NAME/data/"$NAME"
 	FLATPAK_LINE="X-Flatpak=$BROWSER_NAME"
 fi
 
@@ -62,7 +62,7 @@ case "$browser" in
 
 	cp_icon "$ICON_FILE"
 
-	DESKBIN="$HOME/.local/bin/$NAME"
+	DESKBIN=~/.local/bin/"$NAME"
 
 	cat >"$DESKBIN" <<EOF
 #!/usr/bin/env sh
@@ -143,7 +143,7 @@ EOF
 	ICON_FILE="$DIR_PROF/app-icon.png"
 
 	if [[ "$browser" = "$FLATPAK_BIN/"* ]]; then
-		DIR_PORTAL="$HOME/.local/share/xdg-desktop-portal"
+		DIR_PORTAL=~/.local/share/xdg-desktop-portal
 		DIR_PORTAL_APP="$DIR_PORTAL/applications"
 		DIR_PORTAL_ICON="$DIR_PORTAL/icons/64x64"
 

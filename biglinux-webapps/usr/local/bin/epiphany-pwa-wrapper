@@ -8,8 +8,8 @@ epiphany_bin=$(which epiphany 2>/dev/null)
 [ -x "$epiphany_bin" ] || epiphany_bin="$SNAPD_BIN/epiphany"
 
 APP_NAME="org.gnome.Epiphany.WebApp-BigLinuxLauncher"
-APP_DIR="$HOME/.local/share/$APP_NAME"
-[ -d "$APP_DIR" ] || APP_DIR="$HOME/.config/epiphany/$APP_NAME"
+APP_DIR=~/.local/share/"$APP_NAME"
+[ -d "$APP_DIR" ] || APP_DIR=~/.config/epiphany/"$APP_NAME"
 [ -d "$APP_DIR" ] || {
     mkdir -p "$APP_DIR"
     touch "$APP_DIR"/.app

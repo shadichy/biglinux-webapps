@@ -9,8 +9,8 @@ if pidof webapp-manager-biglinux &>/dev/null;then
     exit
 fi
 
-WEBAPP_DIR="/usr/share/bigbashview/bcc/apps/biglinux-webapps/webapps"
-HOME_SHARE_DIR_APP="$HOME/.local/share/applications"
+WEBAPP_DIR=/usr/share/bigbashview/bcc/apps/biglinux-webapps/webapps
+HOME_SHARE_DIR_APP=~/.local/share/applications
 
 # Criando diretórios necessários
 mkdir -p ~/.bigwebapps
@@ -18,8 +18,11 @@ mkdir -p ~/.local/share/icons
 mkdir -p "$HOME_SHARE_DIR_APP"
 mkdir -p ~/.local/bin
 
+SCRIPT_SRC=/usr/share/bigbashview/bcc/apps/biglinux-webapps/scripts
+export SCRIPT_SRC
+
 for script in {detect_browser,installed_browsers_inf,categories}; do
-    . /usr/share/bigbashview/bcc/apps/biglinux-webapps/scripts/"$script".sh
+    . "$SCRIPT_SRC/$script".sh
 done
 
 [ "$(<~/.bigwebapps/BROWSER)" ] || detect_browser
@@ -47,8 +50,8 @@ if [ ! -e ~/.bigwebapps/CUSTOM ];then
     true > ~/.bigwebapps/CUSTOM
 fi
 
-HOME_SHARE_DIR_DESK="$HOME/.local/share/desktop-directories"
-HOME_SHARE_DIR_MENU="$HOME/.config/menus/applications-merged"
+HOME_SHARE_DIR_DESK=~/.local/share/desktop-directories
+HOME_SHARE_DIR_MENU=~/.config/menus/applications-merged
 
 if [ -e "$HOME_SHARE_DIR_DESK"/google-apps.directory ];then
     rm "$HOME_SHARE_DIR_DESK"/google-apps.directory 2>/dev/null

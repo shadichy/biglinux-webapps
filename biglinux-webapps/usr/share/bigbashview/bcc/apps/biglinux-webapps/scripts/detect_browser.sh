@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. ./browser_list.sh
+. "$SCRIPT_SRC"/browser_list.sh
 
 detect_browser() {
 
