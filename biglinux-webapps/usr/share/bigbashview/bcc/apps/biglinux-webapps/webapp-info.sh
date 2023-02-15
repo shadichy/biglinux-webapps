@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+#Translation
+export TEXTDOMAINDIR="/usr/share/locale"
+export TEXTDOMAIN=biglinux-webapps
+
+for script in {installed_browsers_inf,categories}; do
+    . "$SCRIPT_SRC/$script".sh
+done
+
 DESKNAME=${filedesk##*/}
 USER_DESKTOP=$(xdg-user-dir DESKTOP)
 NAME=$(awk -F'=' '/Name/{print $2}' "$filedesk")

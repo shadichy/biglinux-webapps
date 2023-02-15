@@ -65,9 +65,9 @@ set_br() {
     name=${name^^}   # to uppercase
     ;;
   esac
+
   browser_trans["$1"]=$"${name/-/ }"
   browser_icons["$1"]=$icon
-
 }
 
 shopt -s nocasematch
@@ -75,13 +75,11 @@ shopt -s nocasematch
 for browser in "${browser_bin_list[@]}"; do
 
   # Listing available
-  shopt -s lastpipe
-  which -a "$browser" 2>/dev/null |
-    grep -Ev "/usr/local/|${FLATPAK_BIN}|${SNAPD_BIN}" |
+  for dir in $(which -a "$browser" 2>/dev/null | grep -Ev "/usr/local/|${FLATPAK_BIN}|${SNAPD_BIN}" |
     while read -r br; do readlink -f "$(dirname "$br")"; done |
-    uniq |
-    while read -r dir; do set_br "$browser" "${dir#/usr/bin}"; done
-  shopt -u lastpipe
+    uniq); do
+    set_br "$browser" "${dir#/usr/bin}"
+  done
 
   # some systems PATH does not include FLATPAK and SNAP executable paths
   [ -x "${FLATPAK_BIN}/$browser" ] && set_br "$browser" "$FLATPAK_BIN"
