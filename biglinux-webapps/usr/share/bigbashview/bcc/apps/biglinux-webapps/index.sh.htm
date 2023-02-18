@@ -151,7 +151,7 @@ echo -n '
                           '$"Navegador"'
                         </div>
                         <div class="button-wrapper">
-                          <select class="svg-center" id="browserSelect" name="browser">' | tr -d "\t\n\r"
+                          <select class="svg-center" id="browserSelect" name="browser">'
 
 for browser in "${available_browsers[@]}"; do
 	echo -n "<option value=\"${browser}\" data-icon=\"${browser_icons["${browser##*/}"]}\">$(get_title "$browser")</option>"
@@ -169,7 +169,7 @@ echo -n '</select>
                         </div>
                         <div class="button-wrapper">
                           <div class="svg-center">
-                            <select class="svg-center" id="categorySelect" name="category">' | tr -d "\t\n\r"
+                            <select class="svg-center" id="categorySelect" name="category">'
 
 for category in "${!categories[@]}"; do
 	echo -n "<option value=\"$category\">${categories["$category"]}</option>"
@@ -263,7 +263,7 @@ echo -n '
               <!-- FIM TABS CONTENT ADD -->
 
               <!-- INICIO TABS CONTENT LIST -->
-              <div id="list-tab-content" class="fc-card active">' | tr -d "\t\n\r"
+              <div id="list-tab-content" class="fc-card active">'
 
 CUSTOMFILES=()
 LCDIR=~/.local/share/applications
@@ -562,7 +562,7 @@ echo -n '      <!--EDIT MODAL-->
 
               <!-- INICIO TABS CONTENT WEBAPPBIG -->
               <div id="webappsbig-tab-content" class="fc-card">
-                <div style="display:flex;justify-content:center">' | tr -d "\t\n\r"
+                <div style="display:flex;justify-content:center">'
 
 BROWSER=$(<~/.bigwebapps/BROWSER)
 title=$(get_title "$BROWSER")
@@ -584,17 +584,17 @@ echo -n '
         <circle cx="12" cy="12" r="10" />
         <path d="M15 9l-6 6M9 9l6 6" />
       </svg>
-    </div>' | tr -d "\t\n\r"
+    </div>'
 
 for browser in "${available_browsers[@]}"; do
 	icon=${browser_icons["${browser##*/}"]}
-	btn=$(tr -d "\t\n\r" <<<'<button class="btn-img status-button btn-img-main"
+	btn=$'<button class="btn-img status-button btn-img-main"
          id="'"${browser//\//_}"'"
          title="'"$(get_title "$browser")"'">
         <img src="icons/'"$icon"'.svg"
            data-bin="'"$browser"'"
            width="38" height="38">
-      </button>')
+      </button>'
 	if [[ "$browser" = "${FLATPAK_BIN}"* ]]; then
 		flatpak_browsers="$flatpak_browsers $btn"
 	elif [[ "$browser" = "${SNAPD_BIN}"* ]]; then
@@ -626,7 +626,7 @@ echo -n '
       <div class="content-section-title" style="text-align:left">
         '$"WebApps Nativos"'
       </div>
-      <ul id="content-ul">' | tr -d "\t\n\r"
+      <ul id="content-ul">'
 
 mapfile -t files < <(find ./webapps -iname "*-webapp-biglinux.desktop")
 gawk -v browser="${ICON}" '
@@ -718,7 +718,7 @@ gawk -v browser="${ICON}" '
     }' "${files[@]}"
 # End of gawk script
 
-echo -n '
+cat <<'EOF'
                   </ul>
                 </div><br/>
               </div>
@@ -735,4 +735,5 @@ echo -n '
   <script src="js\/script.js"></script>
 
   </body>
-</html>' | tr -d "\t\n\r"
+</html>
+EOF

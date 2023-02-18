@@ -5,7 +5,7 @@ export TEXTDOMAINDIR="/usr/share/locale"
 export TEXTDOMAIN=biglinux-webapps
 
 for script in {installed_browsers_inf,categories}; do
-    . "$SCRIPT_SRC/$script".sh
+		. "$SCRIPT_SRC/$script".sh
 done
 
 DESKNAME=${filedesk##*/}
@@ -93,7 +93,7 @@ echo -n '
 				'$"Navegador"'
 			</div>
 			<div class="button-wrapper">
-				<select class="svg-center" id="browserSelectEdit" name="browserNew">' | tr -d "\t\n\r"
+				<select class="svg-center" id="browserSelectEdit" name="browserNew">'
 
 for browser in "${available_browsers[@]}"; do
 	echo -n "<option value=\"$browser\" data-icon=\"${browser_icons["${browser##*/}"]}\" $(
@@ -118,7 +118,7 @@ echo -n '
 			</div>
 			<div class="button-wrapper">
 				<div class="svg-center">
-					<select class="svg-center" id="categorySelectEdit" name="category">' | tr -d "\t\n\r"
+					<select class="svg-center" id="categorySelectEdit" name="category">'
 
 for category in "${!categories[@]}"; do
 	echo -n "<option value=\"$category\" $(
@@ -193,154 +193,162 @@ echo -n '
 		<button class="content-button status-button2 close">'$"Fechar"'</button>
 	</div>
 </div>
+'
 
+cat <<'EOF'
 <script type="text/javascript">
 
-$("select").each(function(i, s){
+$("select").each(function (i, s) {
 	let getOptions = $(s).find("option");
-	getOptions.sort(function(a, b) {
+	getOptions.sort(function (a, b) {
 		return $(a).text() > $(b).text() ? 1 : -1;
 	});
 	$(this).html(getOptions);
 });
 
-$(function(){
-	$(".pop-up#detectIconEdit .close").click(function(e){
+$(function () {
+	$(".pop-up#detectIconEdit .close").click(function (e) {
 		e.preventDefault();
 		$(".pop-up#detectIconEdit").removeClass("visible");
 	});
 
-	$(".pop-up#nameError .close").click(function(e){
+	$(".pop-up#nameError .close").click(function (e) {
 		e.preventDefault();
 		$(".pop-up#nameError").removeClass("visible");
 	});
 
-	$(".pop-up#editError .close").click(function(e){
+	$(".pop-up#editError .close").click(function (e) {
 		e.preventDefault();
 		$(".pop-up#editError").removeClass("visible");
 	});
 
-	$(".pop-up#editSuccess .close").click(function(e){
+	$(".pop-up#editSuccess .close").click(function (e) {
 		e.preventDefault();
 		$(".pop-up#editSuccess").removeClass("visible");
 		document.location.reload(true);
 	});
 
 	$("#nameDeskEdit").css("border-bottom-color", "forestgreen");
-	$("#nameDeskEdit").on("keyup paste search", function(){
+	$("#nameDeskEdit").on("keyup paste search", function () {
 		let checkName = $(this).val();
-		if (!checkName){
+		if (!checkName) {
 			$(this).css("border-bottom-color", "");
 		} else {
 			$(this).css("border-bottom-color", "forestgreen");
 		}
-	})
-
-	$("#loadIconEdit").click(function(e){
-		e.preventDefault();
-		fetch(`/execute$./change_icon.sh`)
-		.then(resp => resp.text())
-		.then(data => {
-			if (data){
-				$("#iconDeskEdit").attr("src", data);
-				$("#inputIconDeskEdit").val(data);
-				console.log("Change-Icon-Edit: "+data);
-			} else {
-				console.log("Change-Icon-Edit-Cancelled!");
-			}
-		});
 	});
 
-	$("#browserSelectEdit").on("change", function() {
-		$("#browserEdit").attr("src", 
-			`icons/${this.querySelector("option:checked").dataset.icon}.svg`);
+	$("#loadIconEdit").click(function (e) {
+		e.preventDefault();
+		fetch(`/execute$./change_icon.sh`)
+			.then((resp) => resp.text())
+			.then((data) => {
+				if (data) {
+					$("#iconDeskEdit").attr("src", data);
+					$("#inputIconDeskEdit").val(data);
+					console.log("Change-Icon-Edit: " + data);
+				} else {
+					console.log("Change-Icon-Edit-Cancelled!");
+				}
+			});
+	});
+
+	$("#browserSelectEdit").on("change", function () {
+		$("#browserEdit").attr(
+			"src",
+			`icons/${this.querySelector("option:checked").dataset.icon}.svg`
+		);
 		((job, prop) => {
 			$("#addPerfilEdit")[`${job}Class`]("disabled");
 			$("#addPerfilEdit").is(":checked") &&
 				$("#addPerfilEdit").prop("checked", prop);
-		})(
-			this.value.match(/fire(fox|dragon)|librewolf|epiphany/g)
-				? ["remove", true]
-				: ["add", false]
+		})(this.value.match(/fire(fox|dragon)|librewolf|epiphany/g) ? ["remove", true] : ["add", false]);
+		console.log(
+			"Bowser-Combobox-Edit:",
+			this.value,
+			`icons/${this.querySelector("option:checked").dataset.icon}.svg`
 		);
-		console.log("Bowser-Combobox-Edit:", this.value, `icons/${this.querySelector("option:checked").dataset.icon}.svg`);
 	});
 
-	$("select#categorySelectEdit").change(function(){
+	$("select#categorySelectEdit").change(function () {
 		$("#imgCategoryEdit").load("icons/" + this.value + ".svg");
-		console.log("Category-Edit: "+this.value)
+		console.log("Category-Edit: " + this.value);
 	});
 
-	$(".iconDetect-display-Edit").mouseover(function(){
-		let srcIcon = $("#iconDeskEdit").attr("src");
-		if (srcIcon !== "icons/default-webapp.svg"){
-			$(".iconDetect-remove-Edit").show();
-		}
-	}).mouseleave(function(){
-		$(".iconDetect-remove-Edit").hide();
-	});
+	$(".iconDetect-display-Edit")
+		.mouseover(function () {
+			let srcIcon = $("#iconDeskEdit").attr("src");
+			if (srcIcon !== "icons/default-webapp.svg") {
+				$(".iconDetect-remove-Edit").show();
+			}
+		})
+		.mouseleave(function () {
+			$(".iconDetect-remove-Edit").hide();
+		});
 
-	$(".iconDetect-remove-Edit").click(function(e){
+	$(".iconDetect-remove-Edit").click(function (e) {
 		e.preventDefault();
 		$(".iconDetect-remove-Edit").hide();
 		$("#iconDeskEdit").attr("src", "icons/default-webapp.svg");
-		$.get("/execute$echo -n $PWD", function(cwd){
-			$("#inputIconDeskEdit").val(cwd+"/icons/default-webapps.png");
-			console.log("Default-Icon: "+$("#inputIconDeskEdit").val());
+		$.get("/execute$echo -n $PWD", function (cwd) {
+			$("#inputIconDeskEdit").val(cwd + "/icons/default-webapps.png");
+			console.log("Default-Icon: " + $("#inputIconDeskEdit").val());
 		});
 	});
 
-	$("#detectAllEdit").click(function(e){
+	$("#detectAllEdit").click(function (e) {
 		e.preventDefault();
 
 		let url = $("#urlDeskEdit").val();
 		$(".lds-ring").css("display", "inline-flex");
 
 		fetch(`/execute$./get_title.sh.py ${url}`)
-		.then(resp => resp.text())
-		.then(data => {
-			if (data){
-				$("#nameDeskEdit").val(data);
-				$("#nameDeskEdit").keyup();
-			}
-		});
+			.then((resp) => resp.text())
+			.then((data) => {
+				if (data) {
+					$("#nameDeskEdit").val(data);
+					$("#nameDeskEdit").keyup();
+				}
+			});
 
 		fetch(`/execute$./get_favicon.sh.py ${url}`)
-		.then(resp => resp.text())
-		.then(data => {
-			if (data){
-				if (/button/.test(data)){
-					console.log("Multiple-Favicon");
-					$(".pop-up#detectIconEdit .menu-icon").html(data)
-					$(".lds-ring").css("display", "none");
-					$(".pop-up#detectIconEdit").addClass("visible");
-					$(".btn-img-favicon").each(function(index, el){
-						$(el).click(function(e){
-							e.preventDefault();
-							let srcFav = $("#btn-icon-" + index + " img").attr("src");
-							fetch(`/execute$./resize_favicon.sh.py ${srcFav}`)
-							.then(resp => resp.text())
-							.then(data => {
-								$("#iconDeskEdit").attr("src", data);
-								$("#inputIconDeskEdit").val(data);
-								$(".pop-up#detectIconEdit").removeClass("visible");
+			.then((resp) => resp.text())
+			.then((data) => {
+				if (data) {
+					if (/button/.test(data)) {
+						console.log("Multiple-Favicon");
+						$(".pop-up#detectIconEdit .menu-icon").html(data);
+						$(".lds-ring").css("display", "none");
+						$(".pop-up#detectIconEdit").addClass("visible");
+						$(".btn-img-favicon").each(function (index, el) {
+							$(el).click(function (e) {
+								e.preventDefault();
+								let srcFav = $("#btn-icon-" + index + " img").attr("src");
+								fetch(`/execute$./resize_favicon.sh.py ${srcFav}`)
+									.then((resp) => resp.text())
+									.then((data) => {
+										$("#iconDeskEdit").attr("src", data);
+										$("#inputIconDeskEdit").val(data);
+										$(".pop-up#detectIconEdit").removeClass("visible");
+									});
 							});
 						});
-					});
-				} else {
-					console.log("Single-Favicon");
-					$("#iconDeskEdit").attr("src", data);
-					$("#inputIconDeskEdit").val(data);
-					$(".lds-ring").css("display", "none");
+					} else {
+						console.log("Single-Favicon");
+						$("#iconDeskEdit").attr("src", data);
+						$("#inputIconDeskEdit").val(data);
+						$(".lds-ring").css("display", "none");
+					}
 				}
-			}
-		});
+			});
 	});
 
 	var optionSelected = $("#browserSelectEdit").val();
-	if (optionSelected.toLowerCase().match(/fire(fox|dragon)|librewolf|epiphany/g))
-			$("#addPerfilEdit").addClass("disabled");
-
+	if (
+		optionSelected.toLowerCase().match(/fire(fox|dragon)|librewolf|epiphany/g)
+	)
+		$("#addPerfilEdit").addClass("disabled");
 });
 
-</script>' | tr -d "\t\n\r"
+</script>
+EOF

@@ -21,7 +21,7 @@ fi
 
 if [ "$CHANGE" = "true" ]; then
     JSON=$(
-        tr -d "\ \n\r" <<EOF
+        cat <<EOF
 {
   "browser"   : "$browserNew",
   "category"  : "$category",
